@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 # Justice Forum - Edge Function Deployment
 
@@ -61,36 +62,64 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ## Getting Started
 
 First, run the development server:
+=======
+# Justice Forum - Edge Function Deployment
+>>>>>>> 6cad9cf (Initial commit)
 
+## Prerequisites
+1. Install Supabase CLI:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install -g supabase
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Login to Supabase:
+```bash
+supabase login
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Link your project (replace 'your-project-ref' with your Supabase project reference):
+```bash
+supabase link --project-ref your-project-ref
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deploy Edge Function
 
-## Learn More
+1. Deploy the send-invite function:
+```bash
+supabase functions deploy send-invite
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. Set the required secrets for the function:
+```bash
+supabase secrets set SUPABASE_URL=your-project-url
+supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Testing Locally
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To test the Edge Function locally:
 
-## Deploy on Vercel
+1. Start the Supabase Edge Function locally:
+```bash
+supabase functions serve send-invite
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. The function will be available at:
+```
+http://localhost:54321/functions/v1/send-invite
+```
 
+<<<<<<< HEAD
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 >>>>>>> dd51572 (Initial commit from Create Next App)
 >>>>>>> Stashed changes
+=======
+## Function URL
+
+After deployment, your function will be available at:
+```
+https://[your-project-ref].supabase.co/functions/v1/send-invite
+```
+
+Remember to update the InviteUsers component with your deployed function URL.
+>>>>>>> 6cad9cf (Initial commit)
