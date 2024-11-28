@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 type Invitation = {
@@ -17,11 +17,7 @@ export default function InviteUsers() {
   const [message, setMessage] = useState('')
   const supabase = createClientComponentClient()
 
-  useEffect(() => {
-    fetchInvitations()
-  }, [])
-
-  const fetchInvitations = async () => {
+  const fetchInvitations = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('invitations')
@@ -37,7 +33,11 @@ export default function InviteUsers() {
     } catch (error) {
       console.error('Error:', error)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    fetchInvitations()
+  }, [fetchInvitations])
 
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -73,7 +73,7 @@ export default function InviteUsers() {
       if (inviteError) throw inviteError
 
       // Generate a sign-in link
-      const { data: { user }, error: signInError } = await supabase.auth.admin.generateLink({
+      const { error: signInError } = await supabase.auth.admin.generateLink({
         type: 'magiclink',
         email: email,
         options: {
@@ -86,9 +86,9 @@ export default function InviteUsers() {
       setMessage('Invitation created successfully! User will receive a sign-in link.')
       setEmail('')
       await fetchInvitations()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error:', error)
-      setMessage(`Error: ${error.message || 'Failed to create invitation'}`)
+      setMessage(`Error: ${(error as Error).message || 'Failed to create invitation'}`)
     } finally {
       setLoading(false)
     }
